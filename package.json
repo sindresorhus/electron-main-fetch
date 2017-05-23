@@ -1,0 +1,46 @@
+{
+  "name": "electron-main-fetch",
+  "version": "0.0.0",
+  "description": "Use the browser Fetch API from the main process in Electron",
+  "license": "MIT",
+  "repository": "sindresorhus/electron-main-fetch",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "scripts": {
+    "start": "electron example.js",
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "electron",
+    "fetch",
+    "request",
+    "get",
+    "requests",
+    "http",
+    "https",
+    "whatwg",
+    "web",
+    "browser"
+  ],
+  "dependencies": {
+    "electron-util": "^0.1.0"
+  },
+  "devDependencies": {
+    "ava": "*",
+    "electron": "^1.7.1",
+    "execa": "^0.6.3",
+    "xo": "*"
+  },
+  "xo": {
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
