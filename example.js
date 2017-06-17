@@ -5,7 +5,9 @@ const fetch = require('.');
 electron.app.on('window-all-closed', () => {});
 
 (async () => {
-	console.log('Your IP:', await fetch('https://api.ipify.org', {type: 'text'}));
-	console.log('Current date:', (await fetch('http://date.jsontest.com')).date);
+	const r1 = await fetch('https://api.ipify.org');
+	const r2 = await fetch('http://date.jsontest.com')
+	console.log('Your IP:', await r1.text());
+	console.log('Current date:', await r2.json());
 	electron.app.quit();
 })();
