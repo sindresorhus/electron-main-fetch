@@ -1,31 +1,21 @@
 'use strict';
-const electron = require('electron');
-const util = require('electron-util');
+const {app, BrowserWindow} = require('electron');
 
-module.exports = async (url, options) => {
-	await util.appReady;
+module.exports = async (url, {type = 'json', ...options} = {}) => {
+	await app.whenReady();
 
-	options = Object.assign({
-		type: 'json'
-	}, options);
-
-	const type = options.type;
-	delete options.type;
-
-	const win = new electron.BrowserWindow({
+	const mainWindow = new BrowserWindow({
 		show: false,
-		sandbox: true,
-		nodeIntegration: false,
-		contextIsolation: true
+		sandbox: true
 	});
 
-	win.loadURL('about:blank');
+	await mainWindow.loadURL('about:blank');
 
-	const ret = await win.webContents.executeJavaScript(`
+	const result = await mainWindow.webContents.executeJavaScript(`
 		fetch('${url}', JSON.parse('${JSON.stringify(options)}')).then(x => x.${type}())
 	`, true);
 
-	win.destroy();
+	mainWindow.destroy();
 
-	return ret;
+	return result;
 };

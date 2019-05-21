@@ -2,14 +2,14 @@
 
 > Use the browser [`Fetch API`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) from the main process in Electron
 
-**Proof of concept. Comments welcome.**
-
 
 ## Install
 
 ```
 $ npm install electron-main-fetch
 ```
+
+*Requires Electron 5 or later.*
 
 
 ## Usage
@@ -30,7 +30,8 @@ With `Fetch` in the renderer process, the above would instead be:
 
 ```js
 (async () => {
-	const ip = await fetch('https://api.ipify.org').then(response => response.text());
+	const response = await fetch('https://api.ipify.org');
+	const ip = await response.text();
 	console.log(ip);
 	//=> '170.56.15.35'
 })();
