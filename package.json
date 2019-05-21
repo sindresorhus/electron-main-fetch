@@ -1,6 +1,6 @@
 {
 	"name": "electron-main-fetch",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Use the browser Fetch API from the main process in Electron",
 	"license": "MIT",
 	"repository": "sindresorhus/electron-main-fetch",
