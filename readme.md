@@ -14,25 +14,12 @@ $ npm install electron-main-fetch
 
 ## Usage
 
-The difference between this and `Fetch` is that instead of receiving a [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object and calling a method on it for what type to receive, you just specify the type in the function call.
-
 ```js
 const fetch = require('electron-main-fetch');
 
 (async () => {
-	const ip = await fetch('https://api.ipify.org', {type: 'text'});
-	console.log(ip);
-	//=> '170.56.15.35'
-})();
-```
-
-With `Fetch` in the renderer process, the above would instead be:
-
-```js
-(async () => {
 	const response = await fetch('https://api.ipify.org');
-	const ip = await response.text();
-	console.log(ip);
+	console.log(await response.text());
 	//=> '170.56.15.35'
 })();
 ```
@@ -42,14 +29,7 @@ With `Fetch` in the renderer process, the above would instead be:
 
 ### fetch(input, options)
 
-Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters), but also:
-
-#### type
-
-Type: `string`<br>
-Values: [`json`](https://developer.mozilla.org/en-US/docs/Web/API/Body/json) [`text`](https://developer.mozilla.org/en-US/docs/Web/API/Body/text) [`formData`](https://developer.mozilla.org/en-US/docs/Web/API/Body/formData) [`blob`](https://developer.mozilla.org/en-US/docs/Web/API/Body/blob) [`arrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/API/Body/arrayBuffer)<br>
-Default: `json`
-
+Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
 
 ## Related
 
