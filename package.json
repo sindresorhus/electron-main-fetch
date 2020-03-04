@@ -39,6 +39,10 @@
 		"envs": [
 			"node",
 			"browser"
-		]
+		],
+		"rules": {
+      "no-unmodified-loop-condition": 0,
+      "no-await-in-loop": 0
+    }
 	}
 }
