@@ -20,7 +20,7 @@ module.exports = async (url, options = {}) => {
 	}
 
 	while (!isReady) { // eslint-disable-line no-unmodified-loop-condition
-		await sleep(30); // eslint-disable-line no-await-in-loop
+		await delay(30); // eslint-disable-line no-await-in-loop
 	}
 
 	return ProxyFetch.unproxy(await mainWindow.webContents.executeJavaScript(`
@@ -125,6 +125,4 @@ function FetchHeaders(obj) {
 	}
 }
 
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
