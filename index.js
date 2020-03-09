@@ -119,11 +119,9 @@ ProxyFetch.lazyCall = function (id, method) {
 };
 
 function FetchHeaders(obj) {
-	for (const k in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, k)) {
-			this[k] = obj[k];
-			Object.defineProperty(this, k, {enumerable: false});
-		}
+	for (const [k, v] of Object.entries(obj)) {
+		this[k] = v;
+		Object.defineProperty(this, k, {enumerable: false});
 	}
 }
 
