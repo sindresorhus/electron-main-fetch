@@ -19,8 +19,8 @@ module.exports = async (url, options = {}) => {
 		isReady = true;
 	}
 
-	while (!isReady) {
-		await sleep(30);
+	while (!isReady) { // eslint-disable-line no-unmodified-loop-condition
+		await sleep(30); // eslint-disable-line no-await-in-loop
 	}
 
 	return ProxyFetch.unproxy(await mainWindow.webContents.executeJavaScript(`

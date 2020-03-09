@@ -47,7 +47,7 @@ examples.push((async () => {
 (async () => {
 	for (const example of examples) {
 		console.log('=========');
-		await example();
+		await example(); // eslint-disable-line no-await-in-loop
 	}
 
 	app.quit();
