@@ -26,6 +26,12 @@ t.test('main w/text', async t => {
 		i++;
 	}
 
+	i = 0;
+	for (const value of response.headers.values()) {
+		t.equal(value, expectedHeaders[i][1]);
+		i++;
+	}
+
 	try {
 		await response.text();
 		t.fail('should have thrown an error due body already used');

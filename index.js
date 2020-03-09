@@ -43,12 +43,14 @@ class ProxyFetch {
 
 	newResponse(id, response) {
 		const keys = [];
+		const values = [];
 		const entries = [];
 		const headers = {};
 		const isFunction = {isFunction: true};
 
 		for (let [key, value] of response.headers.entries()) {
 			keys.push(key = key.toLowerCase());
+			values.push(value);
 			entries.push([key, value]);
 			headers[key] = headers[key] ? `${headers[key]},${value}` : value;
 		}
@@ -65,7 +67,8 @@ class ProxyFetch {
 			headers: {
 				headers,
 				keys,
-				entries
+				entries,
+				values
 			},
 			json: isFunction,
 			text: isFunction
@@ -84,11 +87,12 @@ class ProxyFetch {
 }
 
 ProxyFetch.unproxy = function (response) {
-	const {keys, entries, headers} = response.headers;
+	const {keys, entries, values, headers} = response.headers;
 
 	response.headers = new FetchHeaders({
 		keys: () => keys,
 		entries: () => entries,
+		values: () => values,
 		get: n => headers[n.toLowerCase()],
 		has: n => n.toLowerCase() in headers
 	});
