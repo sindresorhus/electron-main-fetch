@@ -2,10 +2,10 @@
 const {app} = require('electron');
 const fetch = require('.');
 
-const p = [];
+const examples = [];
 
 // Basic example
-p.push((async () => {
+examples.push((async () => {
 	console.log('basic example');
 
 	const response = await fetch('https://api.ipify.org');
@@ -19,7 +19,7 @@ p.push((async () => {
 }));
 
 // Body used
-p.push((async () => {
+examples.push((async () => {
 	console.log('body used example');
 
 	const response = await fetch('https://api.ipify.org');
@@ -30,7 +30,7 @@ p.push((async () => {
 }));
 
 // Body lock
-p.push((async () => {
+examples.push((async () => {
 	console.log('body lock example');
 
 	const response = await fetch('https://api.ipify.org');
@@ -45,9 +45,9 @@ p.push((async () => {
 }));
 
 (async () => {
-	for (let i = 0; i < p.length; i++) {
+	for (const example of examples) {
 		console.log('=========');
-		await p[i]();
+		await example();
 	}
 
 	app.quit();
