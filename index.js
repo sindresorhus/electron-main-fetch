@@ -67,7 +67,6 @@ class ProxyFetch {
 				keys,
 				entries
 			},
-			blob: isFunction,
 			json: isFunction,
 			text: isFunction
 		};
