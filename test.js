@@ -1,17 +1,47 @@
-import electron from 'electron';
-import test from 'ava';
-import execa from 'execa';
+'use strict';
+const {app} = require('electron');
+const t = require('tap');
+const isIp = require('is-ip');
+const fetch = require('.');
 
-test('main', async t => {
-	const result = await execa(electron, ['fixture.js'], {
-		env: {
-			ELECTRON_ENABLE_LOGGING: true,
-			ELECTRON_ENABLE_STACK_DUMPING: true,
-			ELECTRON_NO_ATTACH_CONSOLE: true
-		}
-	});
+t.test('main w/text', async t => {
+	const response = await fetch('https://api.ipify.org');
 
-	console.log(result.stdout);
+	t.equal(response.type, 'cors');
+	t.equal(response.url, 'https://api.ipify.org/');
+	t.equal(response.redirected, false);
+	t.equal(response.status, 200);
+	t.equal(response.ok, true);
+	t.equal(response.statusText, 'OK');
+	t.equal(response.bodyUsed, false);
+	const ip = await response.text();
+	t.equal(response.bodyUsed, true);
+	t.equal(isIp(ip), true);
 
-	t.pass();
+	const expectedHeaders = [['content-type', 'text/plain']];
+	let i = 0;
+	for (const [key, value] of response.headers.entries()) {
+		t.equal(key, expectedHeaders[i][0]);
+		t.equal(value, expectedHeaders[i][1]);
+		i++;
+	}
+
+	try {
+		await response.text();
+		t.fail('should have thrown an error due body already used');
+	} catch (error) {
+		t.equal(error.message, 'body stream is locked');
+	}
+});
+
+t.test('json', async t => {
+	const response = await fetch('https://api.ipify.org/?format=json');
+
+	const data = await response.json();
+	t.equal(typeof data, 'object');
+	t.equal(isIp(data.ip), true);
+});
+
+t.teardown(() => {
+	app.quit();
 });

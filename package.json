@@ -11,7 +11,7 @@
 	},
 	"scripts": {
 		"start": "electron example.js",
-		"test": "xo && ava"
+		"test": "xo && electron test.js"
 	},
 	"files": [
 		"index.js"
@@ -29,7 +29,6 @@
 		"browser"
 	],
 	"devDependencies": {
-		"ava": "^1.4.1",
 		"electron": "^5.0.1",
 		"execa": "^1.0.0",
 		"is-ip": "^3.0.0",
