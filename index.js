@@ -45,7 +45,7 @@ class ProxyFetch {
 		const keys = [];
 		const entries = [];
 		const headers = {};
-		const isFunc = {isFunc: true};
+		const isFunction = {isFunction: true};
 
 		for (let [key, value] of response.headers.entries()) {
 			keys.push(key = key.toLowerCase());
@@ -67,9 +67,9 @@ class ProxyFetch {
 				keys,
 				entries
 			},
-			blob: isFunc,
-			json: isFunc,
-			text: isFunc
+			blob: isFunction,
+			json: isFunction,
+			text: isFunction
 		};
 	}
 
@@ -95,7 +95,7 @@ ProxyFetch.unproxy = function (response) {
 	});
 
 	for (const k in response) {
-		if (response[k].isFunc) {
+		if (response[k].isFunction) {
 			response[k] = ProxyFetch.lazyCall(response.id, k);
 		}
 	}
