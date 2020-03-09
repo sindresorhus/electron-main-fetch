@@ -2,8 +2,6 @@
 const {app} = require('electron');
 const fetch = require('.');
 
-app.on('window-all-closed', () => {});
-
 const p = [];
 
 // Basic example
