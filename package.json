@@ -39,7 +39,6 @@
 		"envs": [
 			"node",
 			"browser"
-		],
 		]
 	}
 }
