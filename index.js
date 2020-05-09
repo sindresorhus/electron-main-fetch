@@ -15,7 +15,7 @@ module.exports = async (url, options = {}) => {
 
 		win.loadURL('about:blank');
 		await win.webContents.executeJavaScript(ProxyFetch.toString());
-		await win.webContents.executeJavaScript('window.fetcher = new ProxyFetch();');
+		await win.webContents.executeJavaScript('window.proxyFetcher = new ProxyFetch();');
 		isReady = true;
 	}
 
@@ -24,7 +24,7 @@ module.exports = async (url, options = {}) => {
 	}
 
 	return ProxyFetch.unproxy(await win.webContents.executeJavaScript(`
-		window.fetcher.fetch('${url}', JSON.parse('${JSON.stringify(options)}'));
+		window.proxyFetcher.fetch('${url}', JSON.parse('${JSON.stringify(options)}'));
 	`, true));
 };
 
@@ -116,7 +116,6 @@ ProxyFetch.lazyCall = function (id, method) {
 		this.bodyUsed = true;
 
 		return win.webContents.executeJavaScript(
-			`window.fetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
 		);
 	};
 };
