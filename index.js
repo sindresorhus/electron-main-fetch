@@ -14,8 +14,10 @@ module.exports = async (url, options = {}) => {
 		});
 
 		win.loadURL('about:blank');
-		await win.webContents.executeJavaScript(ProxyFetch.toString());
-		await win.webContents.executeJavaScript('window.proxyFetcher = new ProxyFetch();');
+		await win.webContents.executeJavaScript(
+			ProxyFetch.toString() +
+			'window.proxyFetcher = new ProxyFetch();'
+		);
 		isReady = true;
 	}
 
