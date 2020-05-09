@@ -24,9 +24,6 @@ const fetch = require('electron-main-fetch');
 })();
 ```
 
-The main difference between this and `Fetch` is that we don't have direct access to the body stream, so there is no `body` property.
-There is some methods that are not useful in Node.js like `formData()`, `redirect()`, etc.
-
 ## API
 
 ### fetch(input, options)
@@ -55,6 +52,19 @@ Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Windo
 	text: [Function]
 }
 ```
+
+## Difference between this and `Fetch`
+We don't have direct access to the body stream, so there is no `body` property.
+There is some methods that are not useful in Node.js like `formData()`, `redirect()`, etc.
+Some other methods are not very cross-browser compatible, so they are less common to use.
+
+Missing:
+- body
+- blob()
+- formData()
+- headers: append(), delete(), set()
+- clone()
+- error()
 
 ## Related
 
