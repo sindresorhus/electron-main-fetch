@@ -1,21 +1,21 @@
 'use strict';
 const {app, BrowserWindow} = require('electron');
 
-let mainWindow;
+let win;
 let isReady = false;
 
 module.exports = async (url, options = {}) => {
 	await app.whenReady();
 
-	if (!mainWindow) {
-		mainWindow = new BrowserWindow({
+	if (!win) {
+		win = new BrowserWindow({
 			show: false,
 			sandbox: true
 		});
 
-		mainWindow.loadURL('about:blank');
-		await mainWindow.webContents.executeJavaScript(ProxyFetch.toString());
-		await mainWindow.webContents.executeJavaScript('window.fetcher = new ProxyFetch();');
+		win.loadURL('about:blank');
+		await win.webContents.executeJavaScript(ProxyFetch.toString());
+		await win.webContents.executeJavaScript('window.fetcher = new ProxyFetch();');
 		isReady = true;
 	}
 
@@ -23,7 +23,7 @@ module.exports = async (url, options = {}) => {
 		await delay(30); // eslint-disable-line no-await-in-loop
 	}
 
-	return ProxyFetch.unproxy(await mainWindow.webContents.executeJavaScript(`
+	return ProxyFetch.unproxy(await win.webContents.executeJavaScript(`
 		window.fetcher.fetch('${url}', JSON.parse('${JSON.stringify(options)}'));
 	`, true));
 };
@@ -115,7 +115,7 @@ ProxyFetch.lazyCall = function (id, method) {
 
 		this.bodyUsed = true;
 
-		return mainWindow.webContents.executeJavaScript(
+		return win.webContents.executeJavaScript(
 			`window.fetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
 		);
 	};
