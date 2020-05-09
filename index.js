@@ -93,13 +93,13 @@ ProxyFetch.unproxy = function (response) {
 		keys: () => keys,
 		entries: () => entries,
 		values: () => values,
-		get: n => headers[n.toLowerCase()],
-		has: n => n.toLowerCase() in headers
+		get: name => headers[name.toLowerCase()],
+		has: name => name.toLowerCase() in headers
 	});
 
-	for (const k of Object.keys(response)) {
-		if (response[k].isFunction) {
-			response[k] = ProxyFetch.lazyCall(response.id, k);
+	for (const key of Object.keys(response)) {
+		if (response[key].isFunction) {
+			response[key] = ProxyFetch.lazyCall(response.id, key);
 		}
 	}
 
@@ -122,9 +122,9 @@ ProxyFetch.lazyCall = function (id, method) {
 };
 
 function FetchHeaders(obj) {
-	for (const [k, v] of Object.entries(obj)) {
-		this[k] = v;
-		Object.defineProperty(this, k, {enumerable: false});
+	for (const [property, value] of Object.entries(obj)) {
+		this[property] = value;
+		Object.defineProperty(this, property, {enumerable: false});
 	}
 }
 
