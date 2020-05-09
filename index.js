@@ -116,6 +116,7 @@ ProxyFetch.lazyCall = function (id, method) {
 		this.bodyUsed = true;
 
 		return win.webContents.executeJavaScript(
+			`window.proxyFetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
 		);
 	};
 };
