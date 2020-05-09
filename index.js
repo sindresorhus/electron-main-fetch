@@ -30,13 +30,13 @@ module.exports = async (url, options = {}) => {
 
 class ProxyFetch {
 	constructor() {
-		this.autoincrement = 0;
+		this.autoIncrementId = 0;
 		this.responses = {};
 	}
 
 	async fetch(...args) {
 		const response = await fetch(...args);
-		const id = this.autoincrement++;
+		const id = this.autoIncrementId++;
 		this.responses[id] = response;
 		return this.newResponse(id, response);
 	}
