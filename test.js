@@ -4,6 +4,17 @@ const t = require('tap');
 const isIp = require('is-ip');
 const fetch = require('.');
 
+t.test('double fetch without await', async () => {
+	const promise1 = fetch('https://api.ipify.org');
+	const promise2 = fetch('https://api.ipify.org');
+
+	const response1 = await promise1;
+	const response2 = await promise2;
+
+	await response1.text();
+	await response2.text();
+});
+
 t.test('main w/text', async t => {
 	const response = await fetch('https://api.ipify.org');
 
