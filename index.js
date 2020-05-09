@@ -49,7 +49,8 @@ class ProxyFetch {
 		const isFunction = {isFunction: true};
 
 		for (let [key, value] of response.headers.entries()) {
-			keys.push(key = key.toLowerCase());
+			key = key.toLowerCase();
+			keys.push(key);
 			values.push(value);
 			entries.push([key, value]);
 			headers[key] = headers[key] ? `${headers[key]},${value}` : value;
