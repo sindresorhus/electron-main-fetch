@@ -97,7 +97,7 @@ ProxyFetch.unproxy = function (response) {
 		has: n => n.toLowerCase() in headers
 	});
 
-	for (const k in response) {
+	for (const k of Object.keys(response)) {
 		if (response[k].isFunction) {
 			response[k] = ProxyFetch.lazyCall(response.id, k);
 		}
