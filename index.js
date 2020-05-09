@@ -3,7 +3,7 @@ const {app, BrowserWindow} = require('electron');
 const bufferToArrayBuffer = require('buffer-to-arraybuffer');
 
 let win;
-let isReady = false;
+let isWinInitialized;
 
 module.exports = async (url, options = {}) => {
 	await app.whenReady();
@@ -15,15 +15,18 @@ module.exports = async (url, options = {}) => {
 		});
 
 		win.loadURL('about:blank');
-		await win.webContents.executeJavaScript(
+		isWinInitialized = win.webContents.executeJavaScript(
 			ProxyFetch.toString() +
 			'window.proxyFetcher = new ProxyFetch();'
 		);
-		isReady = true;
+
+		isWinInitialized.then(() => {
+			isWinInitialized = true;
+		});
 	}
 
-	while (!isReady) { // eslint-disable-line no-unmodified-loop-condition
-		await delay(30); // eslint-disable-line no-await-in-loop
+	if (isWinInitialized !== true) {
+		await isWinInitialized;
 	}
 
 	return ProxyFetch.unproxy(await win.webContents.executeJavaScript(`
@@ -145,5 +148,3 @@ function FetchHeaders(obj) {
 		Object.defineProperty(this, property, {enumerable: false});
 	}
 }
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
