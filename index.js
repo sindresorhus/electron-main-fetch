@@ -85,42 +85,42 @@ class ProxyFetch {
 		delete this.responses[id];
 		return response[method](...args);
 	}
-}
 
-ProxyFetch.unproxy = function (response) {
-	const {keys, entries, values, headers} = response.headers;
+	static unproxy(response) {
+		const {keys, entries, values, headers} = response.headers;
 
-	response.headers = new FetchHeaders({
-		keys: () => keys,
-		entries: () => entries,
-		values: () => values,
-		get: name => headers[name.toLowerCase()],
-		has: name => name.toLowerCase() in headers
-	});
+		response.headers = new FetchHeaders({
+			keys: () => keys,
+			entries: () => entries,
+			values: () => values,
+			get: name => headers[name.toLowerCase()],
+			has: name => name.toLowerCase() in headers
+		});
 
-	for (const key of Object.keys(response)) {
-		if (response[key].isFunction) {
-			response[key] = ProxyFetch.lazyCall(response.id, key);
+		for (const key of Object.keys(response)) {
+			if (response[key].isFunction) {
+				response[key] = ProxyFetch.lazyCall(response.id, key);
+			}
 		}
+
+		delete response.id;
+		return response;
 	}
 
-	delete response.id;
-	return response;
-};
+	static lazyCall(id, method) {
+		return function (...args) {
+			if (this.bodyUsed) {
+				throw new Error('body stream is locked');
+			}
 
-ProxyFetch.lazyCall = function (id, method) {
-	return function (...args) {
-		if (this.bodyUsed) {
-			throw new Error('body stream is locked');
-		}
+			this.bodyUsed = true;
 
-		this.bodyUsed = true;
-
-		return win.webContents.executeJavaScript(
-			`window.proxyFetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
-		);
-	};
-};
+			return win.webContents.executeJavaScript(
+				`window.proxyFetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
+			);
+		};
+	}
+}
 
 function FetchHeaders(obj) {
 	for (const [property, value] of Object.entries(obj)) {
