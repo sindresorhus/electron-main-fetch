@@ -48,6 +48,15 @@ t.test('json', async t => {
 	t.equal(isIp(data.ip), true);
 });
 
+t.test('arrayBuffer', async t => {
+	const response = await fetch('https://api.ipify.org/?format=json');
+
+	const data = await response.arrayBuffer();
+	t.equal(typeof data, 'object');
+	const json = JSON.parse(Buffer.from(data));
+	t.equal(isIp(json.ip), true);
+});
+
 t.teardown(() => {
 	app.quit();
 });

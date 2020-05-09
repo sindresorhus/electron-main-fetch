@@ -40,5 +40,8 @@
 			"node",
 			"browser"
 		]
+	},
+	"dependencies": {
+		"buffer-to-arraybuffer": "0.0.5"
 	}
 }

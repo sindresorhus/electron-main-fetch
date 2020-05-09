@@ -1,5 +1,6 @@
 'use strict';
 const {app, BrowserWindow} = require('electron');
+const bufferToArrayBuffer = require('buffer-to-arraybuffer');
 
 let win;
 let isReady = false;
@@ -73,6 +74,7 @@ class ProxyFetch {
 				entries,
 				values
 			},
+			arrayBuffer: isFunction,
 			json: isFunction,
 			text: isFunction
 		};
@@ -82,6 +84,10 @@ class ProxyFetch {
 		const response = this.responses[id];
 		if (!response) {
 			throw new Error('Could not find response');
+		}
+
+		if (method === 'arrayBuffer') {
+			method = 'text';
 		}
 
 		delete this.responses[id];
@@ -117,9 +123,18 @@ class ProxyFetch {
 
 			this.bodyUsed = true;
 
-			return win.webContents.executeJavaScript(
+			let promise = win.webContents.executeJavaScript(
 				`window.proxyFetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
 			);
+
+			if (method === 'arrayBuffer') {
+				promise = promise.then(text => {
+					const buffer = Buffer.from(text);
+					return bufferToArrayBuffer(buffer);
+				});
+			}
+
+			return promise;
 		};
 	}
 }

@@ -50,6 +50,7 @@ Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Windo
 		get: [Function],
 		has: [Function]
 	},
+	arrayBuffer: [Function],
 	json: [Function],
 	text: [Function]
 }
