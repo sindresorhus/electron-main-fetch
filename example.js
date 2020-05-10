@@ -6,44 +6,44 @@ const examples = [];
 
 // Basic example
 examples.push((async () => {
-	console.log('basic example');
+	console.log('Basic example');
 
 	const response = await fetch('https://api.ipify.org');
-	console.log('my ip', await response.text());
+	console.log('My IP', await response.text());
 
 	for (const [key, value] of response.headers.entries()) {
-		console.log('header', key, value);
+		console.log('Header', key, value);
 	}
 
 	for (const value of response.headers.values()) {
-		console.log('header value', value);
+		console.log('Header value', value);
 	}
 
-	console.log('response', response);
+	console.log('Response', response);
 }));
 
 // Body used
 examples.push((async () => {
-	console.log('body used example');
+	console.log('Body used example');
 
 	const response = await fetch('https://api.ipify.org');
 
-	console.log('body used?', response.bodyUsed);
-	console.log('my ip', await response.text());
-	console.log('body used?', response.bodyUsed);
+	console.log('Body used?', response.bodyUsed);
+	console.log('My IP', await response.text());
+	console.log('Body used?', response.bodyUsed);
 }));
 
 // Body lock
 examples.push((async () => {
-	console.log('body lock example');
+	console.log('Body lock example');
 
 	const response = await fetch('https://api.ipify.org');
-	console.log('my ip', await response.text());
+	console.log('My IP', await response.text());
 
 	try {
-		console.log('my ip', await response.text());
+		console.log('My IP', await response.text());
 	} catch (error) {
-		// Expected error because body was already used
+		// Expected error because body was already used.
 		console.error(error);
 	}
 }));
