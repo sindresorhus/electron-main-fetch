@@ -45,7 +45,10 @@ Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Windo
 		entries: [Function],
 		values: [Function],
 		get: [Function],
-		has: [Function]
+		has: [Function],
+		set: [Function],
+		append: [Function],
+		delete: [Function]
 	},
 	clone: [Function],
 	arrayBuffer: [Function],
