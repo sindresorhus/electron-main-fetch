@@ -84,6 +84,24 @@ t.test('arrayBuffer', async t => {
 	t.equal(isIp(json.ip), true);
 });
 
+t.test('clone', async t => {
+	const response1 = await fetch('https://api.ipify.org');
+	const response2 = await response1.clone();
+
+	t.equal(response1.bodyUsed, false);
+	t.equal(response2.bodyUsed, false);
+
+	await response1.text();
+
+	t.equal(response1.bodyUsed, true);
+	t.equal(response2.bodyUsed, false);
+
+	await response2.text();
+
+	t.equal(response1.bodyUsed, true);
+	t.equal(response2.bodyUsed, true);
+});
+
 t.teardown(() => {
 	app.quit();
 });

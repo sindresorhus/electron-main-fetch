@@ -18,6 +18,17 @@ examples.push((async () => {
 	console.log('Response', response);
 }));
 
+// Clone response
+examples.push((async () => {
+	console.log('Clone response example');
+
+	const response1 = await fetch('https://api.ipify.org');
+	const response2 = await response1.clone();
+
+	console.log('My IP (1)', await response1.text());
+	console.log('My IP (2)', await response2.text());
+}));
+
 // Body used
 examples.push((async () => {
 	console.log('Body used example');

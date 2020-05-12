@@ -47,6 +47,7 @@ Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Windo
 		get: [Function],
 		has: [Function]
 	},
+	clone: [Function],
 	arrayBuffer: [Function],
 	json: [Function],
 	text: [Function]
@@ -62,8 +63,9 @@ Missing:
 - body
 - blob()
 - formData()
-- clone()
 - error()
+
+A small difference is that our `clone()` is async.
 
 ## Related
 

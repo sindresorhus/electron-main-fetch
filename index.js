@@ -36,12 +36,18 @@ class ProxyFetch {
 
 	async fetch(...args) {
 		const response = await fetch(...args);
-		const id = this.autoIncrementId++;
-		this.responses[id] = response;
-		return this.newResponse(id, response);
+		return this.newResponse(response);
 	}
 
-	newResponse(id, response) {
+	clone(id) {
+		const response = this.responses[id].clone();
+		return this.newResponse(response);
+	}
+
+	newResponse(response) {
+		const id = this.autoIncrementId++;
+		this.responses[id] = response;
+
 		const headers = [];
 		const isFunction = {isFunction: true};
 
@@ -59,6 +65,7 @@ class ProxyFetch {
 			statusText: response.statusText,
 			bodyUsed: response.bodyUsed,
 			headers,
+			clone: isFunction,
 			arrayBuffer: isFunction,
 			json: isFunction,
 			text: isFunction
@@ -96,6 +103,12 @@ class ProxyFetch {
 		return async function (...args) {
 			if (this.bodyUsed) {
 				throw new Error('body stream is locked');
+			}
+
+			if (method === 'clone') {
+				return ProxyFetch.unproxy(await window_.webContents.executeJavaScript(
+					`window.proxyFetcher.clone(${id})`
+				));
 			}
 
 			this.bodyUsed = true;
