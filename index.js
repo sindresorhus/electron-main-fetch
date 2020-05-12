@@ -3,7 +3,7 @@ const {app, BrowserWindow} = require('electron');
 const bufferToArrayBuffer = require('buffer-to-arraybuffer');
 
 let window_;
-let isWinInitialized;
+let windowLoad;
 
 module.exports = async (url, options = {}) => {
 	await app.whenReady();
@@ -15,19 +15,13 @@ module.exports = async (url, options = {}) => {
 		});
 
 		window_.loadURL('about:blank');
-		isWinInitialized = window_.webContents.executeJavaScript(
+		windowLoad = window_.webContents.executeJavaScript(
 			ProxyFetch.toString() +
 			'window.proxyFetcher = new ProxyFetch();'
 		);
-
-		isWinInitialized.then(() => {
-			isWinInitialized = true;
-		});
 	}
 
-	if (isWinInitialized !== true) {
-		await isWinInitialized;
-	}
+	await windowLoad;
 
 	return ProxyFetch.unproxy(await window_.webContents.executeJavaScript(`
 		window.proxyFetcher.fetch('${url}', JSON.parse('${JSON.stringify(options)}'));
