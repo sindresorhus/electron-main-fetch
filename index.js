@@ -42,18 +42,11 @@ class ProxyFetch {
 	}
 
 	newResponse(id, response) {
-		const keys = [];
-		const values = [];
-		const entries = [];
-		const headers = {};
+		const headers = [];
 		const isFunction = {isFunction: true};
 
-		for (let [key, value] of response.headers.entries()) {
-			key = key.toLowerCase();
-			keys.push(key);
-			values.push(value);
-			entries.push([key, value]);
-			headers[key] = headers[key] ? `${headers[key]},${value}` : value;
+		for (const header of response.headers.entries()) {
+			headers.push(header);
 		}
 
 		return {
@@ -65,12 +58,7 @@ class ProxyFetch {
 			ok: response.ok,
 			statusText: response.statusText,
 			bodyUsed: response.bodyUsed,
-			headers: {
-				headers,
-				keys,
-				entries,
-				values
-			},
+			headers,
 			arrayBuffer: isFunction,
 			json: isFunction,
 			text: isFunction
@@ -92,15 +80,7 @@ class ProxyFetch {
 	}
 
 	static unproxy(response) {
-		const {keys, entries, values, headers} = response.headers;
-
-		response.headers = new FetchHeaders({
-			keys: () => keys,
-			entries: () => entries,
-			values: () => values,
-			get: name => headers[name.toLowerCase()],
-			has: name => name.toLowerCase() in headers
-		});
+		response.headers = new FetchHeaders(response.headers);
 
 		for (const key of Object.keys(response)) {
 			if (response[key].isFunction) {
@@ -136,9 +116,73 @@ class ProxyFetch {
 	}
 }
 
-function FetchHeaders(obj) {
-	for (const [property, value] of Object.entries(obj)) {
-		this[property] = value;
-		Object.defineProperty(this, property, {enumerable: false});
+class FetchHeaders {
+	constructor(headers) {
+		this.headers = {};
+		for (const [key, value] of headers) {
+			this.append(key, value);
+		}
+
+		Object.defineProperty(this, 'headers', {enumerable: false});
+	}
+
+	append(key, value) {
+		key = key.toLowerCase();
+		if (!this.headers[key]) {
+			this.headers[key] = [];
+		}
+
+		this.headers[key].push(`${value}`);
+	}
+
+	delete(key) {
+		key = key.toLowerCase();
+		delete this.headers[key];
+	}
+
+	entries() {
+		const entries = [];
+		for (const key of Object.keys(this.headers)) {
+			entries.push([key, this.headers[key].join(', ')]);
+		}
+
+		return entries;
+	}
+
+	get(key) {
+		key = key.toLowerCase();
+		if (typeof this.headers[key] === 'undefined') {
+			return null;
+		}
+
+		return this.headers[key].join(', ');
+	}
+
+	has(key) {
+		key = key.toLowerCase();
+		return typeof this.headers[key] !== 'undefined';
+	}
+
+	keys() {
+		const keys = [];
+		for (const key of Object.keys(this.headers)) {
+			keys.push(key);
+		}
+
+		return keys;
+	}
+
+	set(key, value) {
+		key = key.toLowerCase();
+		this.headers[key] = [`${value}`];
+	}
+
+	values() {
+		const values = [];
+		for (const value of Object.values(this.headers)) {
+			values.push(value.join(', '));
+		}
+
+		return values;
 	}
 }

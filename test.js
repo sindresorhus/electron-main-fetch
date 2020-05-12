@@ -29,26 +29,42 @@ t.test('main w/text', async t => {
 	t.equal(response.bodyUsed, true);
 	t.equal(isIp(ip), true);
 
-	const expectedHeaders = [['content-type', 'text/plain']];
-	let i = 0;
-	for (const [key, value] of response.headers.entries()) {
-		t.equal(key, expectedHeaders[i][0]);
-		t.equal(value, expectedHeaders[i][1]);
-		i++;
-	}
-
-	i = 0;
-	for (const value of response.headers.values()) {
-		t.equal(value, expectedHeaders[i][1]);
-		i++;
-	}
-
 	try {
 		await response.text();
 		t.fail('should have thrown an error due body already used');
 	} catch (error) {
 		t.equal(error.message, 'body stream is locked');
 	}
+});
+
+t.test('headers', async t => {
+	const {headers} = await fetch('https://api.ipify.org');
+
+	t.equal(headers.has('content-type'), true);
+	t.equal(headers.get('content-type'), 'text/plain');
+
+	for (const [key, value] of headers.entries()) {
+		t.equal(key, 'content-type');
+		t.equal(value, 'text/plain');
+		break;
+	}
+
+	for (const key of headers.keys()) {
+		t.equal(key, 'content-type');
+		break;
+	}
+
+	for (const value of headers.values()) {
+		t.equal(value, 'text/plain');
+		break;
+	}
+
+	t.equal(headers.has('x-not-exists'), false);
+	t.equal(headers.get('x-not-exists'), null);
+	t.equal(headers.set('x-not-exists'), undefined);
+	t.equal(headers.get('x-not-exists'), 'undefined');
+	headers.delete('x-not-exists');
+	t.equal(headers.has('x-not-exists'), false);
 });
 
 t.test('json', async t => {

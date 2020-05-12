@@ -62,7 +62,6 @@ Missing:
 - body
 - blob()
 - formData()
-- headers: append(), delete(), set()
 - clone()
 - error()
 

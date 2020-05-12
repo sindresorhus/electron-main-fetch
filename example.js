@@ -15,10 +15,6 @@ examples.push((async () => {
 		console.log('Header', key, value);
 	}
 
-	for (const value of response.headers.values()) {
-		console.log('Header value', value);
-	}
-
 	console.log('Response', response);
 }));
 
