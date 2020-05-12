@@ -60,10 +60,10 @@ There is some methods that are not useful in Node.js like `formData()`, `redirec
 Some other methods are not very cross-browser compatible, so they are less common to use.
 
 Missing:
-- body
-- blob()
-- formData()
-- error()
+- `body`
+- `blob()`
+- `formData()`
+- `error()`
 
 A small difference is that our `clone()` is async.
 

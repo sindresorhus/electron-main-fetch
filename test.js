@@ -15,7 +15,7 @@ t.test('double fetch without await', async () => {
 	await response2.text();
 });
 
-t.test('main w/text', async t => {
+t.test('main with text', async t => {
 	const response = await fetch('https://api.ipify.org');
 
 	t.equal(response.type, 'cors');
