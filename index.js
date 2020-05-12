@@ -93,25 +93,23 @@ class ProxyFetch {
 	}
 
 	static lazyCall(id, method) {
-		return function (...args) {
+		return async function (...args) {
 			if (this.bodyUsed) {
 				throw new Error('body stream is locked');
 			}
 
 			this.bodyUsed = true;
 
-			let promise = window_.webContents.executeJavaScript(
+			let result = await window_.webContents.executeJavaScript(
 				`window.proxyFetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
 			);
 
 			if (method === 'arrayBuffer') {
-				promise = promise.then(text => {
-					const buffer = Buffer.from(text);
-					return bufferToArrayBuffer(buffer);
-				});
+				const buffer = Buffer.from(result);
+				result = bufferToArrayBuffer(buffer);
 			}
 
-			return promise;
+			return result;
 		};
 	}
 }
