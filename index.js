@@ -129,7 +129,7 @@ class ProxyFetch {
 
 class FetchHeaders {
 	constructor(headers) {
-		this.headers = {};
+		this.headers = new Map();
 		for (const [key, value] of headers) {
 			this.append(key, value);
 		}
@@ -139,22 +139,20 @@ class FetchHeaders {
 
 	append(key, value) {
 		key = key.toLowerCase();
-		if (!this.headers[key]) {
-			this.headers[key] = [];
-		}
-
-		this.headers[key].push(`${value}`);
+		const values = this.headers.get(key) || [];
+		values.push(`${value}`);
+		this.headers.set(key, values);
 	}
 
 	delete(key) {
 		key = key.toLowerCase();
-		delete this.headers[key];
+		this.headers.delete(key);
 	}
 
 	entries() {
 		const entries = [];
-		for (const key of Object.keys(this.headers)) {
-			entries.push([key, this.headers[key].join(', ')]);
+		for (const [key, value] of this.headers.entries()) {
+			entries.push([key, value.join(', ')]);
 		}
 
 		return entries;
@@ -162,35 +160,31 @@ class FetchHeaders {
 
 	get(key) {
 		key = key.toLowerCase();
-		if (typeof this.headers[key] === 'undefined') {
+		const value = this.headers.get(key);
+		if (!value) {
 			return null;
 		}
 
-		return this.headers[key].join(', ');
+		return value.join(', ');
 	}
 
 	has(key) {
 		key = key.toLowerCase();
-		return typeof this.headers[key] !== 'undefined';
+		return this.headers.has(key);
 	}
 
 	keys() {
-		const keys = [];
-		for (const key of Object.keys(this.headers)) {
-			keys.push(key);
-		}
-
-		return keys;
+		return this.headers.keys();
 	}
 
 	set(key, value) {
 		key = key.toLowerCase();
-		this.headers[key] = [`${value}`];
+		this.headers.set(key, [`${value}`]);
 	}
 
 	values() {
 		const values = [];
-		for (const value of Object.values(this.headers)) {
+		for (const value of this.headers.values()) {
 			values.push(value.join(', '));
 		}
 
