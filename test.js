@@ -65,6 +65,11 @@ t.test('headers', async t => {
 	t.equal(headers.get('x-not-exists'), 'undefined');
 	headers.delete('x-not-exists');
 	t.equal(headers.has('x-not-exists'), false);
+
+	headers.append('x-values', 'one');
+	headers.append('x-values', 'two');
+	headers.append('x-values', 'thr,ee');
+	t.equal(headers.get('x-values'), 'one, two, thr,ee');
 });
 
 t.test('json', async t => {
