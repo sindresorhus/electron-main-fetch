@@ -1,7 +1,6 @@
-# electron-main-fetch [![Build Status](https://travis-ci.org/sindresorhus/electron-main-fetch.svg?branch=master)](https://travis-ci.org/sindresorhus/electron-main-fetch)
+# electron-main-fetch [![Build Status](https://travis-ci.com/sindresorhus/electron-main-fetch.svg?branch=master)](https://travis-ci.com/github/sindresorhus/electron-main-fetch)
 
 > Use the browser [`Fetch API`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) from the main process in Electron
-
 
 ## Install
 
@@ -10,7 +9,6 @@ $ npm install electron-main-fetch
 ```
 
 *Requires Electron 5 or later.*
-
 
 ## Usage
 
@@ -58,9 +56,8 @@ Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Windo
 ```
 
 ## Difference between this and `Fetch`
-We don't have direct access to the body stream, so there is no `body` property.
-There is some methods that are not useful in Node.js like `formData()`, `redirect()`, etc.
-Some other methods are not very cross-browser compatible, so they are less common to use.
+
+We don't have direct access to the body stream, so there is no `body` property. There are some methods that are not useful in Node.js, like `formData()`, `redirect()`, etc. Some other methods are not very cross-browser compatible, so they are less common to use.
 
 Missing:
 - `body`
@@ -68,7 +65,7 @@ Missing:
 - `formData()`
 - `error()`
 
-A small difference is that our `clone()` is async.
+A small difference is that our `.clone()` method is async.
 
 ## Related
 
@@ -77,8 +74,3 @@ A small difference is that our `clone()` is async.
 - [electron-context-menu](https://github.com/sindresorhus/electron-context-menu) - Context menu for your Electron app
 - [electron-dl](https://github.com/sindresorhus/electron-dl) - Simplified file downloads for your Electron app
 - [electron-unhandled](https://github.com/sindresorhus/electron-unhandled) - Catch unhandled errors and promise rejections in your Electron app
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

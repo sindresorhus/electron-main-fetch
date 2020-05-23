@@ -4,10 +4,11 @@
 	"description": "Use the browser Fetch API from the main process in Electron",
 	"license": "MIT",
 	"repository": "sindresorhus/electron-main-fetch",
+	"funding": "https://github.com/sponsors/sindresorhus",
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"url": "https://sindresorhus.com"
 	},
 	"scripts": {
 		"start": "electron example.js",
@@ -28,6 +29,9 @@
 		"web",
 		"browser"
 	],
+	"dependencies": {
+		"buffer-to-arraybuffer": "0.0.5"
+	},
 	"devDependencies": {
 		"electron": "^5.0.1",
 		"execa": "^1.0.0",
@@ -40,8 +44,5 @@
 			"node",
 			"browser"
 		]
-	},
-	"dependencies": {
-		"buffer-to-arraybuffer": "0.0.5"
 	}
 }
