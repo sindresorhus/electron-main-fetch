@@ -14,42 +14,61 @@ $ npm install electron-main-fetch
 
 ## Usage
 
-The difference between this and `Fetch` is that instead of receiving a [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object and calling a method on it for what type to receive, you just specify the type in the function call.
-
 ```js
 const fetch = require('electron-main-fetch');
 
 (async () => {
-	const ip = await fetch('https://api.ipify.org', {type: 'text'});
-	console.log(ip);
-	//=> '170.56.15.35'
-})();
-```
-
-With `Fetch` in the renderer process, the above would instead be:
-
-```js
-(async () => {
 	const response = await fetch('https://api.ipify.org');
-	const ip = await response.text();
-	console.log(ip);
+	console.log(await response.text());
 	//=> '170.56.15.35'
 })();
 ```
-
 
 ## API
 
 ### fetch(input, options)
 
-Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters), but also:
+Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
 
-#### type
+### Response object example
+```js
+{
+	type: 'cors',
+	url: 'https://api.ipify.org/',
+	redirected: false,
+	status: 200,
+	ok: true,
+	statusText: 'OK',
+	bodyUsed: false,
+	headers: {
+		keys: [Function],
+		entries: [Function],
+		values: [Function],
+		get: [Function],
+		has: [Function],
+		set: [Function],
+		append: [Function],
+		delete: [Function]
+	},
+	clone: [Function],
+	arrayBuffer: [Function],
+	json: [Function],
+	text: [Function]
+}
+```
 
-Type: `string`<br>
-Values: [`json`](https://developer.mozilla.org/en-US/docs/Web/API/Body/json) [`text`](https://developer.mozilla.org/en-US/docs/Web/API/Body/text) [`formData`](https://developer.mozilla.org/en-US/docs/Web/API/Body/formData) [`blob`](https://developer.mozilla.org/en-US/docs/Web/API/Body/blob) [`arrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/API/Body/arrayBuffer)<br>
-Default: `json`
+## Difference between this and `Fetch`
+We don't have direct access to the body stream, so there is no `body` property.
+There is some methods that are not useful in Node.js like `formData()`, `redirect()`, etc.
+Some other methods are not very cross-browser compatible, so they are less common to use.
 
+Missing:
+- `body`
+- `blob()`
+- `formData()`
+- `error()`
+
+A small difference is that our `clone()` is async.
 
 ## Related
 
