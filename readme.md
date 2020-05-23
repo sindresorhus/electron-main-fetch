@@ -8,7 +8,7 @@
 $ npm install electron-main-fetch
 ```
 
-*Requires Electron 5 or later.*
+*Requires Electron 9 or later.*
 
 ## Usage
 
