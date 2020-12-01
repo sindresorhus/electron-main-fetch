@@ -1,4 +1,4 @@
-# electron-main-fetch [![Build Status](https://travis-ci.com/sindresorhus/electron-main-fetch.svg?branch=master)](https://travis-ci.com/github/sindresorhus/electron-main-fetch)
+# electron-main-fetch
 
 > Use the browser [`Fetch API`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) from the main process in Electron
 
