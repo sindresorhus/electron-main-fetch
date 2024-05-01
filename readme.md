@@ -4,22 +4,21 @@
 
 ## Install
 
-```
-$ npm install electron-main-fetch
+```sh
+npm install electron-main-fetch
 ```
 
-*Requires Electron 9 or later.*
+*Requires Electron 30 or later.*
 
 ## Usage
 
 ```js
-const fetch = require('electron-main-fetch');
+import fetch from 'electron-main-fetch';
 
-(async () => {
-	const response = await fetch('https://api.ipify.org');
-	console.log(await response.text());
-	//=> '170.56.15.35'
-})();
+const response = await fetch('https://api.ipify.org');
+
+console.log(await response.text());
+//=> '170.56.15.35'
 ```
 
 ## API
@@ -29,6 +28,7 @@ const fetch = require('electron-main-fetch');
 Same [options as `Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
 
 ### Response object example
+
 ```js
 {
 	type: 'cors',
@@ -69,7 +69,7 @@ A small difference is that our `.clone()` method is async.
 
 ## Related
 
-- [electron-store](https://github.com/sindresorhus/electron-store) - Save and load data like user preferences, app state, cache, etc
+- [electron-store](https://github.com/sindresorhus/electron-store) - Save and load data like user settings, app state, cache, etc
 - [electron-debug](https://github.com/sindresorhus/electron-debug) - Adds useful debug features to your Electron app
 - [electron-context-menu](https://github.com/sindresorhus/electron-context-menu) - Context menu for your Electron app
 - [electron-dl](https://github.com/sindresorhus/electron-dl) - Simplified file downloads for your Electron app

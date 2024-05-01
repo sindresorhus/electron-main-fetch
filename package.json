@@ -10,9 +10,15 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": "./index.js",
+	"sideEffects": false,
+	"engines": {
+		"node": ">=18"
+	},
 	"scripts": {
 		"start": "electron example.js",
-		"test": "xo && electron test.js"
+		"test": "xo && electron test.js | tap-spec"
 	},
 	"files": [
 		"index.js"
@@ -30,14 +36,15 @@
 		"browser"
 	],
 	"dependencies": {
-		"buffer-to-arraybuffer": "0.0.5"
+		"buffer-to-arraybuffer": "0.0.6"
 	},
 	"devDependencies": {
-		"electron": "^5.0.1",
-		"execa": "^1.0.0",
-		"is-ip": "^3.0.0",
-		"tap": "^14.10.6",
-		"xo": "^0.24.0"
+		"electron": "^30.0.1",
+		"execa": "^8.0.1",
+		"is-ip": "^5.0.1",
+		"tap": "^18.7.2",
+		"tap-spec": "^5.0.0",
+		"xo": "^0.58.0"
 	},
 	"xo": {
 		"envs": [

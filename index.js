@@ -1,23 +1,23 @@
-'use strict';
-const {app, BrowserWindow} = require('electron');
-const bufferToArrayBuffer = require('buffer-to-arraybuffer');
+import {app, BrowserWindow} from 'electron';
+import bufferToArrayBuffer from 'buffer-to-arraybuffer';
 
 let window_;
 let windowLoad;
 
-module.exports = async (url, options = {}) => {
+export default async function fetch(url, options = {}) {
 	await app.whenReady();
 
 	if (!window_) {
 		window_ = new BrowserWindow({
 			show: false,
-			sandbox: true
+			sandbox: true,
 		});
 
 		window_.loadURL('about:blank');
+
 		windowLoad = window_.webContents.executeJavaScript(
-			ProxyFetch.toString() +
-			'window.proxyFetcher = new ProxyFetch();'
+			ProxyFetch.toString()
+			+ 'window.proxyFetcher = new ProxyFetch();',
 		);
 	}
 
@@ -26,7 +26,7 @@ module.exports = async (url, options = {}) => {
 	return ProxyFetch.unproxy(await window_.webContents.executeJavaScript(`
 		window.proxyFetcher.fetch('${url}', JSON.parse('${JSON.stringify(options)}'));
 	`, true));
-};
+}
 
 class ProxyFetch {
 	constructor() {
@@ -34,8 +34,8 @@ class ProxyFetch {
 		this.responses = {};
 	}
 
-	async fetch(...args) {
-		const response = await fetch(...args);
+	async fetch(...arguments_) {
+		const response = await fetch(...arguments_);
 		return this.newResponse(response);
 	}
 
@@ -68,11 +68,11 @@ class ProxyFetch {
 			clone: isFunction,
 			arrayBuffer: isFunction,
 			json: isFunction,
-			text: isFunction
+			text: isFunction,
 		};
 	}
 
-	call(id, method, ...args) {
+	call(id, method, ...arguments_) {
 		const response = this.responses[id];
 		if (!response) {
 			throw new Error('Could not find response');
@@ -83,7 +83,7 @@ class ProxyFetch {
 		}
 
 		delete this.responses[id];
-		return response[method](...args);
+		return response[method](...arguments_);
 	}
 
 	static unproxy(response) {
@@ -100,21 +100,21 @@ class ProxyFetch {
 	}
 
 	static lazyCall(id, method) {
-		return async function (...args) {
+		return async function (...arguments_) {
 			if (this.bodyUsed) {
 				throw new Error('body stream is locked');
 			}
 
 			if (method === 'clone') {
 				return ProxyFetch.unproxy(await window_.webContents.executeJavaScript(
-					`window.proxyFetcher.clone(${id})`
+					`window.proxyFetcher.clone(${id})`,
 				));
 			}
 
 			this.bodyUsed = true;
 
 			let result = await window_.webContents.executeJavaScript(
-				`window.proxyFetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(args)}'))`
+				`window.proxyFetcher.call(${id}, '${method}', ...JSON.parse('${JSON.stringify(arguments_)}'))`,
 			);
 
 			if (method === 'arrayBuffer') {

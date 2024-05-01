@@ -1,6 +1,5 @@
-'use strict';
-const {app} = require('electron');
-const fetch = require('.');
+import {app} from 'electron';
+import fetch from './index.js';
 
 const examples = [];
 
@@ -16,10 +15,7 @@ examples.push((async () => {
 	}
 
 	console.log('Response', response);
-}));
-
-// Clone response
-examples.push((async () => {
+}), (async () => {
 	console.log('Clone response example');
 
 	const response1 = await fetch('https://api.ipify.org');
@@ -27,10 +23,7 @@ examples.push((async () => {
 
 	console.log('My IP (1)', await response1.text());
 	console.log('My IP (2)', await response2.text());
-}));
-
-// Body used
-examples.push((async () => {
+}), (async () => {
 	console.log('Body used example');
 
 	const response = await fetch('https://api.ipify.org');
@@ -38,10 +31,7 @@ examples.push((async () => {
 	console.log('Body used?', response.bodyUsed);
 	console.log('My IP', await response.text());
 	console.log('Body used?', response.bodyUsed);
-}));
-
-// Body lock
-examples.push((async () => {
+}), (async () => {
 	console.log('Body lock example');
 
 	const response = await fetch('https://api.ipify.org');
@@ -51,10 +41,11 @@ examples.push((async () => {
 		console.log('My IP', await response.text());
 	} catch (error) {
 		// Expected error because body was already used.
-		console.error(error);
+		console.error('Expected error:', error);
 	}
 }));
 
+// eslint-disable-next-line unicorn/prefer-top-level-await
 (async () => {
 	for (const example of examples) {
 		console.log('=========');
